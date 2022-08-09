@@ -41,11 +41,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="#">Sign out</a>
-        </div>
-    </div>
 </header>
 
 <div class="container-fluid">

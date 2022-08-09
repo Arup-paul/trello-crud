@@ -24,9 +24,10 @@ Route::post('login',[TrelloController::class,'login'])->name('login');
 Route::get('/organizations',[TrelloController::class,'organizations'])->name('organizations');
 Route::get('/board/{id}',[TrelloController::class,'boards'])->name('board');
 Route::post('/store-list',[TrelloController::class,'StoreList'])->name('list.store');
+Route::get('/list-show/{id}',[TrelloController::class,'showList'])->name('list.show');
+Route::post('/store-card',[TrelloController::class,'StoreCard'])->name('card.store');
+Route::get('/card-show/{id}',[TrelloController::class,'showCard'])->name('card.show');
 
 Route::resource('boards',BoardController::class);
 
 
-//api key -> dc05ec2ef5337f946a7a68d28eb9a639
-//api token = eb88e4eef82bd811fd3c04d1fef4432449e0448d9a341374bd9646db1f702930

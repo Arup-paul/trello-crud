@@ -73,6 +73,7 @@ class BoardController extends Controller
         $curlData = new Service();
         $response = $curlData->curlData($url);
         $lists =  json_decode($response);
+
       return view('lists.index',compact('lists','id'));
     }
 
