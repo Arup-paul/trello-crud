@@ -11,13 +11,22 @@
                             @if(Session::has('message'))
                                 <p class="alert alert-danger">{{ Session::get('message') }}</p>
                             @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <form action="{{route('login')}}" method="post">
                                 @csrf
                                 <div class="mb-3">
-                                    <input type="text" name="api_key" class="form-control" placeholder="Enter Api Key">
+                                    <input type="text" required name="api_key" class="form-control" placeholder="Enter Api Key">
                                 </div>
                                 <div class="mb-3">
-                                    <input type="text" name="api_token" class="form-control"  placeholder="Enter Api Token">
+                                    <input type="text" required name="api_token" class="form-control"  placeholder="Enter Api Token">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Authorization</button>
                             </form>

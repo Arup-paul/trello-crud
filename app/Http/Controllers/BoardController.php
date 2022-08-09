@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -37,15 +38,9 @@ class BoardController extends Controller
 
    public function edit($id){
             $data = Session::get('data');
-             $url = 'https://api.trello.com/1/boards/'.$id.'?key='.$data['api_key'].'&token='.$data['api_token'];
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-            $response = curl_exec ($ch);
-            $err = curl_error($ch);  //if you need
-            curl_close ($ch);
+            $url = 'https://api.trello.com/1/boards/'.$id.'?key='.$data['api_key'].'&token='.$data['api_token'];
+            $curlData = new Service();
+            $response = $curlData->curlData($url);
             $board =  json_decode($response);
 
             return view('board.edit',compact('board'));
@@ -70,6 +65,15 @@ class BoardController extends Controller
         if ($response) {
             return response()->json('Update Board Successfully');
         }
+    }
+
+    public function show($id){
+        $data = Session::get('data');
+        $url = 'https://api.trello.com/1/boards/'.$id.'/lists?key='.$data['api_key'].'&token='.$data['api_token'];
+        $curlData = new Service();
+        $response = $curlData->curlData($url);
+        $lists =  json_decode($response);
+      return view('lists.index',compact('lists','id'));
     }
 
     public function destroy($id)

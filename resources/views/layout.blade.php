@@ -1,16 +1,21 @@
 @php
-       $data = \Illuminate\Support\Facades\Session::get('data');
-        $url = 'https://api.trello.com/1/members/'.$data['user_id'].'/organizations?key='.$data['api_key'].'&token='.$data['api_token'];
+        $data = \Illuminate\Support\Facades\Session::get('data');
+        if($data){
+         $url = 'https://api.trello.com/1/members/'.$data['user_id'].'/organizations?key='.$data['api_key'].'&token='.$data['api_token'];
 
-       $ch = curl_init();
-       curl_setopt($ch, CURLOPT_URL, $url);
-       curl_setopt($ch, CURLOPT_POST, 0);
-       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+           $ch = curl_init();
+           curl_setopt($ch, CURLOPT_URL, $url);
+           curl_setopt($ch, CURLOPT_POST, 0);
+           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-       $response = curl_exec ($ch);
-       $err = curl_error($ch);  //if you need
-       curl_close ($ch);
-       $organizations =  $response ? json_decode($response) : [];
+           $response = curl_exec ($ch);
+           $err = curl_error($ch);  //if you need
+           curl_close ($ch);
+           $organizations =  $response ? json_decode($response) : [];
+        }else{
+            $organizations = [];
+        }
+
 @endphp
 <!doctype html>
 <html lang="en">
@@ -54,9 +59,8 @@
                     @if (is_array($organizations) || is_object($organizations))
                     @foreach($organizations  as $organization)
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{route('board',$organization->id)}}">
-                                <span data-feather="home" class="align-text-bottom"></span>
-                                {{$organization->displayName}}
+                            <a class="nav-link @if(route('board',$organization->id) === url()->current()) active @endif" aria-current="page" href="{{route('board',$organization->id)}}">
+                               {{$organization->displayName}}
                             </a>
                         </li>
                     @endforeach

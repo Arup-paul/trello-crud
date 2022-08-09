@@ -23,6 +23,7 @@ Route::post('login',[TrelloController::class,'login'])->name('login');
 
 Route::get('/organizations',[TrelloController::class,'organizations'])->name('organizations');
 Route::get('/board/{id}',[TrelloController::class,'boards'])->name('board');
+Route::post('/store-list',[TrelloController::class,'StoreList'])->name('list.store');
 
 Route::resource('boards',BoardController::class);
 

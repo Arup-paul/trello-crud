@@ -21,7 +21,7 @@
                              <div class="card-body">
                                  <h6 class="card-title text-white ">{{$board->name ?? ""}}</h6>
                                  <p class="card-text text-white">{{$board->desc ?? ''}}</p>
-                                 <a href="#" class="btn btn-info">View</a>
+                                 <a href="{{route('boards.show',$board->id)}}" class="btn btn-info">View</a>
                                  <a href="{{route('boards.edit',$board->id)}}" class="btn btn-primary">Edit</a>
                                  <a href="javascript:void(0)"
                                     class="btn btn-danger delete-confirm"
