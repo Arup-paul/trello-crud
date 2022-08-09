@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
-});
+})->name('login.home');
 
 Route::post('login',[TrelloController::class,'login'])->name('login');
 
+Route::middleware(['authorize'])->group(function () {
 Route::get('/organizations',[TrelloController::class,'organizations'])->name('organizations');
 Route::get('/board/{id}',[TrelloController::class,'boards'])->name('board');
 Route::post('/store-list',[TrelloController::class,'StoreList'])->name('list.store');
@@ -31,3 +32,6 @@ Route::get('/card-show/{id}',[TrelloController::class,'showCard'])->name('card.s
 Route::resource('boards',BoardController::class);
 
 
+Route::get('logout',[TrelloController::class,'logout'])->name('logout');
+
+});
