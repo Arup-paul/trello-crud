@@ -20,7 +20,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form action="{{route('login')}}" method="post">
+                            <form action="{{route('login')}}" class="ajaxform_with_redirect" method="post">
                                 @csrf
                                 <div class="mb-3">
                                     <input type="text" required name="api_key" class="form-control" placeholder="Enter Api Key">
@@ -28,7 +28,7 @@
                                 <div class="mb-3">
                                     <input type="text" required name="api_token" class="form-control"  placeholder="Enter Api Token">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Authorization</button>
+                                <button type="submit" class="btn btn-primary basicbtn">Authorization</button>
                             </form>
                         </div>
                     </div>

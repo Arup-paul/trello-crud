@@ -9,19 +9,16 @@ use Illuminate\Support\Facades\Session;
 
 class TrelloController extends Controller
 {
+    const BASE_URL = 'https://api.trello.com/1/';
    public function login(Request $request){
        $request->validate([
            'api_key' => 'required',
            'api_token' => 'required'
        ]);
-        $url = 'https://api.trello.com/1/members/me?key='.$request->api_key.'&token='.$request->api_token;
+       $url = self::BASE_URL.'members/me?key='.$request->api_key.'&token='.$request->api_token;
        $curlData = new Service();
        $response = $curlData->curlData($url);
        $userInfo =  json_decode($response);
-
-       $organizationUrl = 'https://api.trello.com/1/members/'.$userInfo->id.'/organizations?key='.$request->api_key.'&token='.$request->api_token;
-       $organizationResponse =  $curlData->curlData($organizationUrl);
-       $organizationInfo =  json_decode($organizationResponse);
 
        if($userInfo){
           $data = [
@@ -29,17 +26,26 @@ class TrelloController extends Controller
             'api_token' => $request->api_token,
             'user_id' => $userInfo->id,
           ];
+           $organizationUrl = self::BASE_URL.'members/'.$userInfo->id.'/organizations?key='.$request->api_key.'&token='.$request->api_token;
+           $organizationResponse =  $curlData->curlData($organizationUrl);
+           $organizationInfo =  json_decode($organizationResponse);
           Session::put('data',$data);
           if($organizationInfo){
-              return redirect()->route('board',$organizationInfo[0]->id);
+              return response()->json([
+                  'message' => "Authorization Successfully",
+                  'redirect' => route('board',$organizationInfo[0]->id)
+              ]);
           }else{
-              return redirect()->route('organizations');
+              return response()->json([
+                  'message' => "Authorization Successfully",
+                  'redirect' => route('organizations')
+              ]);
           }
 
-
       }else{
-          Session::flash("message","Your api key or token Invalid");
-          return redirect()->back();
+           return response()->json([
+               'message' => "Your api key or token is  Invalid",
+           ],422);
       }
 
 
@@ -54,7 +60,7 @@ class TrelloController extends Controller
    public function boards($id){
 
        $data = Session::get('data');
-       $url = 'https://api.trello.com/1/organizations/'.$id.'/boards?key='.$data['api_key'].'&token='.$data['api_token'];
+       $url = self::BASE_URL.'organizations/'.$id.'/boards?key='.$data['api_key'].'&token='.$data['api_token'];
        $curlData = new Service();
        $response = $curlData->curlData($url);
        $boards =  json_decode($response);
@@ -76,7 +82,7 @@ class TrelloController extends Controller
        );
        $headers = array('Accept' => 'application/json');
 
-       $response = Http::withHeaders($headers)->post('https://api.trello.com/1/lists?', $query);
+       $response = Http::withHeaders($headers)->post(self::BASE_URL.'lists?', $query);
        if ($response) {
            return response()->json([
                'message' => 'List Created Successfully',
@@ -87,7 +93,7 @@ class TrelloController extends Controller
 
    public function showList($id){
        $data = Session::get('data');
-       $url = 'https://api.trello.com/1/lists/'.$id.'/cards?key='.$data['api_key'].'&token='.$data['api_token'];
+       $url = self::BASE_URL.'lists/'.$id.'/cards?key='.$data['api_key'].'&token='.$data['api_token'];
        $curlData = new Service();
        $response = $curlData->curlData($url);
         $cards =  json_decode($response);
@@ -110,7 +116,7 @@ class TrelloController extends Controller
         );
         $headers = array('Accept' => 'application/json');
 
-        $response = Http::withHeaders($headers)->post('https://api.trello.com/1/cards?', $query);
+        $response = Http::withHeaders($headers)->post(self::BASE_URL.'cards?', $query);
         if ($response) {
             return response()->json([
                 'message' => 'Card Created Successfully',
@@ -121,7 +127,7 @@ class TrelloController extends Controller
 
     public function showCard($id){
         $data = Session::get('data');
-        $url = 'https://api.trello.com/1/cards/'.$id.'?key='.$data['api_key'].'&token='.$data['api_token'];
+        $url = self::BASE_URL.'cards/'.$id.'?key='.$data['api_key'].'&token='.$data['api_token'];
         $curlData = new Service();
         $response = $curlData->curlData($url);
         $card =  json_decode($response);

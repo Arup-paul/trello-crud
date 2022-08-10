@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 
 class BoardController extends Controller
 {
+    const BASE_URL = 'https://api.trello.com/1/';
 
     public function create(){
         return view('board.create');
@@ -29,7 +30,7 @@ class BoardController extends Controller
         );
         $headers = array('Accept' => 'application/json');
 
-        $response = Http::withHeaders($headers)->post('https://api.trello.com/1/boards/', $query);
+        $response = Http::withHeaders($headers)->post(self::BASE_URL.'boards/', $query);
         if ($response) {
             return response()->json('Create Board Successfully');
         }
@@ -38,7 +39,7 @@ class BoardController extends Controller
 
    public function edit($id){
             $data = Session::get('data');
-            $url = 'https://api.trello.com/1/boards/'.$id.'?key='.$data['api_key'].'&token='.$data['api_token'];
+            $url = self::BASE_URL.'boards/'.$id.'?key='.$data['api_key'].'&token='.$data['api_token'];
             $curlData = new Service();
             $response = $curlData->curlData($url);
             $board =  json_decode($response);
@@ -61,7 +62,7 @@ class BoardController extends Controller
         );
         $headers = array('Accept' => 'application/json');
 
-          $response = Http::withHeaders($headers)->put('https://api.trello.com/1/boards/'.$id, $query);
+          $response = Http::withHeaders($headers)->put(self::BASE_URL.'boards/'.$id, $query);
         if ($response) {
             return response()->json('Update Board Successfully');
         }
@@ -69,7 +70,7 @@ class BoardController extends Controller
 
     public function show($id){
         $data = Session::get('data');
-        $url = 'https://api.trello.com/1/boards/'.$id.'/lists?key='.$data['api_key'].'&token='.$data['api_token'];
+        $url = self::BASE_URL.'boards/'.$id.'/lists?key='.$data['api_key'].'&token='.$data['api_token'];
         $curlData = new Service();
         $response = $curlData->curlData($url);
         $lists =  json_decode($response);
@@ -86,7 +87,7 @@ class BoardController extends Controller
             'token' => $data['api_token']
         );
         $headers = array('Accept' => 'application/json');
-        $response = Http::withHeaders($headers)->delete('https://api.trello.com/1/boards/'.$id, $query);
+        $response = Http::withHeaders($headers)->delete(self::BASE_URL.'boards/'.$id, $query);
         if($response){
             return response()->json([
                 'message' => __('Board Deleted Successfully'),

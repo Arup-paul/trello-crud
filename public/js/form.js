@@ -92,7 +92,7 @@
                         Sweet('error', xhr.responseText);
                     }
 
-                    showInputErrors(xhr.responseJSON)
+
                 }
             });
     });
