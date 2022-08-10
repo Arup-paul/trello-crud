@@ -15,21 +15,23 @@
                             </div>
                         </a>
                 </div>
-                @foreach($boards as $board)
-                 <div class="col-4 py-2">
-                         <div class="card bg-success">
-                             <div class="card-body">
-                                 <h6 class="card-title text-white ">{{$board->name ?? ""}}</h6>
-                                 <p class="card-text text-white">{{$board->desc ?? ''}}</p>
-                                 <a href="{{route('boards.show',$board->id)}}" class="btn btn-info">View</a>
-                                 <a href="{{route('boards.edit',$board->id)}}" class="btn btn-primary">Edit</a>
-                                 <a href="javascript:void(0)"
-                                    class="btn btn-danger delete-confirm"
-                                    data-action={{ route('boards.destroy', $board->id) }} >Delete</a>
+                @if(is_array($boards) || is_object($boards))
+                    @foreach($boards as $board)
+                     <div class="col-4 py-2">
+                             <div class="card bg-success">
+                                 <div class="card-body">
+                                     <h6 class="card-title text-white ">{{$board->name ?? ""}}</h6>
+                                     <p class="card-text text-white">{{$board->desc ?? ''}}</p>
+                                     <a href="{{route('boards.show',$board->id)}}" class="btn btn-info">View</a>
+                                     <a href="{{route('boards.edit',$board->id)}}" class="btn btn-primary">Edit</a>
+                                     <a href="javascript:void(0)"
+                                        class="btn btn-danger delete-confirm"
+                                        data-action={{ route('boards.destroy', $board->id) }} >Delete</a>
+                                 </div>
                              </div>
-                         </div>
-                 </div>
-                @endforeach
+                     </div>
+                    @endforeach
+              @endif
             </div>
     </main>
 @endsection

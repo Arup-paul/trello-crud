@@ -6,6 +6,7 @@
         </div>
 
         <div class="row">
+            @if (is_array($lists) || is_object($lists))
             @foreach($lists as $list)
                 <div class="col-4 py-2">
                     <a href="{{route('list.show',$list->id)}}" >
@@ -17,6 +18,7 @@
                     </a>
                 </div>
             @endforeach
+            @endif
                 <div class="col-4 py-2">
 
                     <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
