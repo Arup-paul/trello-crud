@@ -1,40 +1,53 @@
-@extends('welcome')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>{{env('APP_NAME')}}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-@section('content')
-    <div class="justify-center text-center align-items:center">
-        <div class="container">
+    @include('layouts.style')
+</head>
+
+<body>
+<div id="app">
+    <section class="section">
+        <div class="container mt-5">
             <div class="row">
-                <div class="col-6 offset-3">
-                    <div class="card trello-area">
+                <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+
+                    <div class="card card-primary">
+                        <div class="card-header"><h4>Trello Authorization</h4></div>
+
                         <div class="card-body">
-                            <h2>Trello Authorization</h2>
-                            @if(Session::has('message'))
-                                <p class="alert alert-danger">{{ Session::get('message') }}</p>
-                            @endif
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
+                            <form  action="{{route('login')}}" class="ajaxform_with_redirect" method="post">
+                                <div class="form-group">
+                                    <label for="email">Api Key</label>
+                                    <input id="email" type="text" placeholder="Enter Api Key" class="form-control" name="api_key" tabindex="1" required>
                                 </div>
-                            @endif
-                            <form action="{{route('login')}}" class="ajaxform_with_redirect" method="post">
-                                @csrf
-                                <div class="mb-3">
-                                    <input type="text" required name="api_key" class="form-control" placeholder="Enter Api Key">
+                                <div class="form-group">
+                                    <label for="token">Token</label>
+                                    <input id="token" type="text" class="form-control" name="api_token" placeholder="Enter Api Token" required>
                                 </div>
-                                <div class="mb-3">
-                                    <input type="text" required name="api_token" class="form-control"  placeholder="Enter Api Token">
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block basicbtn" tabindex="4">
+                                        Authorization
+                                    </button>
                                 </div>
-                                <button type="submit" class="btn btn-primary basicbtn">Authorization</button>
                             </form>
+
+
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    </section>
+</div>
+
+<!-- General JS Scripts -->
+@include('layouts.script')
+</body>
+</html>
